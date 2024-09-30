@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heima.mapper.JurMapper">
+
+    <!-- 插入ManagementStatus -->
+    <insert id="addColumnJur" parameterType="com.heima.pojo.ManagementStatus">
+        INSERT INTO management_status (user_id,
+                                       org_management,
+                                       contract_management,
+                                       database_management,
+                                       user_management,
+                                       info_management,
+                                       appointment_management,
+                                       statistical_analysis,
+                                       system_logs,
+                                       business_opportunities,
+                                       after_sales_logs,
+                                       system_integration,
+                                       log_management,
+                                       task_list,
+                                       permission_management,
+                                       product_management,
+                                       employee_management,
+                                       system_configuration)
+        VALUES (#{userId},
+                #{orgManagement},
+                #{contractManagement},
+                #{databaseManagement},
+                #{userManagement},
+                #{infoManagement},
+                #{appointmentManagement},
+                #{statisticalAnalysis},
+                #{systemLogs},
+                #{businessOpportunities},
+                #{afterSalesLogs},
+                #{systemIntegration},
+                #{logManagement},
+                #{taskList},
+                #{permissionManagement},
+                #{productManagement},
+                #{employeeManagement},
+                #{systemConfiguration});
+    </insert>
+
+    <!-- 插入OperationPermissions -->
+    <insert id="addOperationJur" parameterType="com.heima.pojo.OperationPermissions">
+        INSERT INTO operation_permissions (user_id,
+                                           create_permission,
+                                           grant_permission,
+                                           edit_permission,
+                                           delete_permission,
+                                           view_permission,
+                                           search_permission)
+        VALUES (#{userId},
+                #{createPermission},
+                #{grantPermission},
+                #{editPermission},
+                #{deletePermission},
+                #{viewPermission},
+                #{searchPermission});
+    </insert>
+<!--    查看用户栏目权限-->
+    <select id="getUserColumnJur" resultType="com.heima.pojo.ManagementStatus">
+        SELECT *
+        FROM management_status
+        WHERE user_id = #{id}
+    </select>
+<!--    查看用户操作权限-->
+    <select id="getUserOperationJur" resultType="com.heima.pojo.OperationPermissions">
+        SELECT *
+        FROM operation_permissions
+        WHERE user_id = #{id}
+    </select>
+</mapper>

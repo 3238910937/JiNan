@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heima.mapper.UserMapper">
+    <!-- 添加用户   -->
+    <insert id="add" parameterType="com.heima.pojo.User">
+        insert into users (username, admin_category, name, department_name, status, password, job_name, job_category,
+                           create_date, create_date_time, update_date, update_date_time)
+        values (#{username}, #{adminCategory}, #{name}, #{departmentName}, #{status}, #{password}, #{jobName},
+                #{jobCategory}, #{createDate}, #{createDateTime}, #{updateDate}, #{updateDateTime})
+    </insert>
+    <!--    分页查询-->
+    <select id="findPageBean" resultType="com.heima.pojo.User">
+        select *
+        from users
+        <where>
+            <if test="name != null and name !=''">
+                <if test="queryId==1">
+                    id = #{name}
+                </if>
+                <if test=" queryId==2">
+                    id = #{name} or name like concat('%',#{name},'%')
+                    or admin_category = #{name} or department_name like concat('%',#{name},'%') or create_date =
+                    #{name} or update_date = #{name} or status = #{name}
+                    or job_name like concat('%',#{name},'%') or job_category = #{name}
+                </if>
+                <if test="queryId==3">
+                    or name like concat('%',#{name},'%')
+                </if>
+                <if test=" queryId==4">
+                    or admin_category = #{name}
+                </if>
+                <if test="queryId==5">
+                    or department_name like concat('%',#{name},'%')
+                </if>
+                <if test=" queryId==6">
+                    or create_date = #{name}
+                </if>
+                <if test="queryId==7">
+                    or update_date = #{name}
+                </if>
+                <if test=" queryId==8">
+                    or status = #{name}
+                </if>
+                <if test="queryId==9">
+                    or job_name like concat('%',#{name},'%')
+                </if>
+                <if test="queryId==10">
+                    or job_category = #{name}
+                </if>
+            </if>
+        </where>
+    </select>
+    <!-- 更新用户权限-->
+    <update id="updateUserRights">
+        update users
+        <set>
+            <if test="adminCategory != null">
+                admin_category = #{adminCategory},
+            </if>
+            <if test="jobCategory != null">
+                job_category = #{jobCategory},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        <where>
+            username = #{username}
+        </where>
+    </update>
+    <!--    更新用户资料-->
+    <update id="updateUserInfo">
+        update users
+        <set>
+            <if test="username != null and username != '' ">
+                username = #{username},
+            </if>
+            <if test="password !=null and password!=''">
+                password = #{password},
+            </if>
+            <if test="departmentName !=null and departmentName!=''">
+                department_name = #{departmentName},
+            </if>
+            <if test="jobName !=null and jobName!=''">
+                job_name = #{jobName},
+            </if>
+            <if test="jobCategory !=null ">
+                job_category = #{jobCategory},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+<!--       查看用户资料-->
+    <select id="getUserAllInfo" resultType="com.heima.pojo.User">
+        select users.*
+        from users
+        where users.id = #{id}
+    </select>
+<!--    登录-->
+    <select id="findEmpByPassword" resultType="com.heima.pojo.User">
+        select *
+        from users
+        where username = #{username}
+          and password = #{password}
+    </select>
+
+</mapper>
